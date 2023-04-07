@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+        #logging:
+        #driver: logstash"
+        #options:
+        #logstash-host: "logstash:5044"
+        #tag: "{{.ImageName}}/{{.Name}}"
+
+  db:
+    image: postgres:latest
+    environment: 
+      POSTGRES_PASSWORD: test 
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    environment:
+      - SERVER_NAME=localhost
+    depends_on: 
+      - web
+    links:
+      - web
+  
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+

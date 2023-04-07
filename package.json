@@ -1,0 +1,21 @@
+{
+  "name": "go-rest-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.go",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/BrandenM-PM/go-rest-api"
+  },
+  "author": "Branden Morin",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "purecss": "^3.0.0"
+  }
+}

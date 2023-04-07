@@ -1,0 +1,20 @@
+<div id="main">
+    <div class="header">
+        <h1>Page Title</h1>
+        <h2>A subtitle for your page goes here</h2>
+    </div>
+
+    <div class="content">
+        <h2 class="content-subhead">Recent Posts</h2>
+        {{#each Articles}}
+        <h2 class="content-subhead">{{title}}</h2>
+        <section class="post">
+            <div class="post-description">
+                {{content}}
+            </div>
+        </section>
+        {{/each}}
+
+    </div>
+</div>
+
