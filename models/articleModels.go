@@ -1,9 +1,24 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"net/url"
+
+	"gorm.io/gorm"
+)
 
 type Article struct {
-    gorm.Model
-    Title string
-    Content string
+	gorm.Model
+	Title   string
+	Content string
+}
+
+type FileItem struct {
+	gorm.Model
+	Name            string
+	url             url.URL
+	lastModified    string
+	cacheExpiration string
+	CachedUrl       string
+	created         string
+	owner           string
 }
