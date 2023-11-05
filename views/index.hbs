@@ -1,20 +1,45 @@
-<div id="main">
-    <div class="header">
-        <h1>Page Title</h1>
-        <h2>A subtitle for your page goes here</h2>
-    </div>
+<div class="container">
+    <div class="section">
 
-    <div class="content">
-        <h2 class="content-subhead">Recent Posts</h2>
-        {{#each Articles}}
-        <h2 class="content-subhead">{{title}}</h2>
-        <section class="post">
-            <div class="post-description">
-                {{content}}
-            </div>
-        </section>
-        {{/each}}
+        <div id="uppy" class="row"></div>
 
+        <table class="highlight responsive-table">
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>File Size</th>
+                    <th>File Type</th>
+                    <th>File URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>file1.txt</td>
+                    <td>15KB</td>
+                    <td>text/plain</td>
+                    <td>http://example.com/file1.txt</td>
+                </tr>
+                <tr>
+                    <td>file2.jpg</td>
+                    <td>200KB</td>
+                    <td>image/jpeg</td>
+                    <td>http://example.com/file2.jpg</td>
+                </tr>
+                <tr>
+                    <td>file3.pdf</td>
+                    <td>500KB</td>
+                    <td>application/pdf</td>
+                    <td>http://example.com/file3.pdf</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script type="module">
+            import { Uppy, Dashboard } from "https://releases.transloadit.com/uppy/v3.18.1/uppy.min.mjs"
+            const uppy = new Uppy()
+            uppy.use(Dashboard, { target: '#uppy', inline: true })
+
+            let table = new DataTable('.highlight');
+        </script>
     </div>
 </div>
-

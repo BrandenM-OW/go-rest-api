@@ -1,24 +1,16 @@
 basePath: /
 definitions:
-  gorm.DeletedAt:
+  models.File:
     properties:
-      time:
-        type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
-    type: object
-  models.Article:
-    properties:
-      content:
+      cachedUrl:
         type: string
       createdAt:
         type: string
       deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
+        type: string
       id:
         type: integer
-      title:
+      name:
         type: string
       updatedAt:
         type: string
@@ -28,14 +20,11 @@ info:
   contact:
     email: brandenmorin14@gmail.com
     name: Branden Morin
-  description: This is a sample swagger for Fiber
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: Example Article API
+  description: This is a server for uploading and downloading files.
+  title: Files API
   version: "1.0"
 paths:
-  /articles:
+  /Files:
     get:
       produces:
       - application/json
@@ -44,9 +33,10 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Article'
+              $ref: '#/definitions/models.File'
             type: array
-      summary: Retrieves all Articles
+      summary: Retrieves all Files
+  /files:
     post:
       parameters:
       - description: Title
@@ -65,12 +55,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Article'
-      summary: Creates an Article
-  /articles/{id}:
+            $ref: '#/definitions/models.File'
+      summary: Creates an File
+  /files/{id}:
     delete:
       parameters:
-      - description: Article ID
+      - description: File ID
         in: path
         name: id
         required: true
@@ -81,38 +71,14 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Article'
-      summary: Deletes an Article based on given ID
+            $ref: '#/definitions/models.File'
+      summary: Deletes a File based on given ID
+  /files/{name}:
     get:
       parameters:
-      - description: Article ID
+      - description: File Name
         in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Article'
-      summary: Retrieves an Article based on given ID
-    patch:
-      parameters:
-      - description: Article ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Title
-        in: formData
-        name: title
-        required: true
-        type: string
-      - description: Content
-        in: formData
-        name: content
+        name: name
         required: true
         type: string
       produces:
@@ -121,6 +87,14 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Article'
-      summary: Updates an Article based on given ID
+            $ref: '#/definitions/models.File'
+      summary: Retrieves a File based on given Name
+  /getpresigned:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Gets a presigned URL for uploading a file to GCS
 swagger: "2.0"

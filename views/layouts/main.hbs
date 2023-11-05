@@ -2,13 +2,15 @@
 <html lang="en">
     {{> 'partials/header' }}
     <body>
-        <div id="layout">
-            {{> 'partials/navbar' }}
-        </div>
-        
+        <header>
+        {{> 'partials/navbar' }}
+        </header>
+        <main>
         {{embed}}
-
+        </main>
+        <footer class="page-footer grey darken-4">
         {{> 'partials/footer' }}
         {{> 'partials/scripts' }}
+        </footer>
     </body>
 </html>

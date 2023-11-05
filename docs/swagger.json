@@ -1,130 +1,43 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample swagger for Fiber",
-        "title": "Example Article API",
+        "description": "This is a server for uploading and downloading files.",
+        "title": "Files API",
         "contact": {
             "name": "Branden Morin",
             "email": "brandenmorin14@gmail.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
         "version": "1.0"
     },
     "host": "localhost",
     "basePath": "/",
     "paths": {
-        "/articles": {
+        "/Files": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Retrieves all Articles",
+                "summary": "Retrieves all Files",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Article"
+                                "$ref": "#/definitions/models.File"
                             }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Creates an Article",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Title",
-                        "name": "title",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Content",
-                        "name": "content",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Article"
                         }
                     }
                 }
             }
         },
-        "/articles/{id}": {
-            "get": {
+        "/files": {
+            "post": {
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Retrieves an Article based on given ID",
+                "summary": "Creates an File",
                 "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Article ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Article"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Deletes an Article based on given ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Article ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Article"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Updates an Article based on given ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Article ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "Title",
@@ -144,42 +57,93 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Article"
+                            "$ref": "#/definitions/models.File"
                         }
+                    }
+                }
+            }
+        },
+        "/files/{id}": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Deletes a File based on given ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "File ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.File"
+                        }
+                    }
+                }
+            }
+        },
+        "/files/{name}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Retrieves a File based on given Name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "File Name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.File"
+                        }
+                    }
+                }
+            }
+        },
+        "/getpresigned": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Gets a presigned URL for uploading a file to GCS",
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
         }
     },
     "definitions": {
-        "gorm.DeletedAt": {
+        "models.File": {
             "type": "object",
             "properties": {
-                "time": {
-                    "type": "string"
-                },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
-                }
-            }
-        },
-        "models.Article": {
-            "type": "object",
-            "properties": {
-                "content": {
+                "cachedUrl": {
                     "type": "string"
                 },
                 "createdAt": {
                     "type": "string"
                 },
                 "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "title": {
+                "name": {
                     "type": "string"
                 },
                 "updatedAt": {

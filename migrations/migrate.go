@@ -1,8 +1,10 @@
 package migrations
 
-import "github.com/BrandenM-PM/go-rest-api/initializers"
-import "github.com/BrandenM-PM/go-rest-api/models"
+import (
+	"github.com/BrandenM-PM/go-rest-api/initializers"
+	"github.com/BrandenM-PM/go-rest-api/models"
+)
 
 func Run() {
-    initializers.DB.AutoMigrate(&models.Article{})
+	initializers.DB.AutoMigrate(&models.File{})
 }
