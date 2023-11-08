@@ -8,8 +8,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/BrandenM-PM/go-rest-api/controllers"
 	_ "github.com/BrandenM-PM/go-rest-api/docs"
 	"github.com/BrandenM-PM/go-rest-api/initializers"
@@ -42,13 +40,12 @@ func main() {
 
 	app.Get("/", controllers.Index)
 	app.Get("/ping", controllers.Ping)
-	app.Get("/files", controllers.GetAllFiles)
-	app.Get("/files/:name", controllers.GetFile)
+	app.Post("/files", controllers.GetAllFiles)
 	app.Get("/get-presigned", controllers.GetPresigned)
 
-	app.Group("/admin", middleware.JWTProtected(), middleware.IsAdmin).Get("/files", controllers.GetAllFiles)
+	// app.Group("/admin", middleware.JWTProtected(), middleware.IsAdmin).Get("/files", controllers.GetAllFiles)
 
-	app.Post("/store-file/:name", controllers.CreateFile)
+	app.Get("/store-file", controllers.CreateFile)
 	app.Delete("/files/:id", controllers.DeleteFile)
 
 	app.Get("/swagger/*", swagger.HandlerDefault)
@@ -56,6 +53,5 @@ func main() {
 	migrations.Run()
 
 	port := os.Getenv("PORT")
-	fmt.Println("Server is running on port", port)
 	log.Fatal(app.Listen(port))
 }

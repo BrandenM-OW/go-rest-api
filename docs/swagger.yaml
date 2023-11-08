@@ -2,7 +2,7 @@ basePath: /
 definitions:
   models.File:
     properties:
-      cachedUrl:
+      contentType:
         type: string
       createdAt:
         type: string
@@ -12,6 +12,10 @@ definitions:
         type: integer
       name:
         type: string
+      owner:
+        type: string
+      size:
+        type: integer
       updatedAt:
         type: string
     type: object
@@ -89,7 +93,7 @@ paths:
           schema:
             $ref: '#/definitions/models.File'
       summary: Retrieves a File based on given Name
-  /getpresigned:
+  /get-presigned:
     get:
       produces:
       - application/json

@@ -119,7 +119,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/getpresigned": {
+        "/get-presigned": {
             "get": {
                 "produces": [
                     "application/json"
@@ -137,7 +137,7 @@ const docTemplate = `{
         "models.File": {
             "type": "object",
             "properties": {
-                "cachedUrl": {
+                "contentType": {
                     "type": "string"
                 },
                 "createdAt": {
@@ -151,6 +151,12 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"

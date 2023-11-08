@@ -15,3 +15,7 @@ footer {
 .uppy-Dashboard-inner {
     width: 100% !important;
 }
+
+a.uppy-Dashboard-poweredBy {
+    display: none !important;
+}

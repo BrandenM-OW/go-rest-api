@@ -23,4 +23,4 @@ go.work
 .env
 .vscode
 build
-.env
+docs

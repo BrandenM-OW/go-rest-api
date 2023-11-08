@@ -113,7 +113,7 @@
                 }
             }
         },
-        "/getpresigned": {
+        "/get-presigned": {
             "get": {
                 "produces": [
                     "application/json"
@@ -131,7 +131,7 @@
         "models.File": {
             "type": "object",
             "properties": {
-                "cachedUrl": {
+                "contentType": {
                     "type": "string"
                 },
                 "createdAt": {
@@ -145,6 +145,12 @@
                 },
                 "name": {
                     "type": "string"
+                },
+                "owner": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -11,10 +12,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-const (
-	projectID = "nimble-charmer-403517"
-)
-
 // CreateFile godoc
 // @Summary Creates an File
 // @Produce json
@@ -23,7 +20,23 @@ const (
 // @Success 200 {object} models.File
 // @Router /files [post]
 func CreateFile(c *fiber.Ctx) error {
-	new_file := models.File{}
+	name := c.FormValue("name")
+	contentType := c.FormValue("contentType")
+	size := c.FormValue("size")
+
+	var intSize int64
+	if size != "" {
+		intSize, _ = strconv.ParseInt(size, 10, 64)
+	}
+
+	new_file := models.File{
+		Name:        name,
+		ContentType: contentType,
+		Size:        intSize,
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
+		Owner:       "Branden",
+	}
 
 	result := initializers.DB.Create(&new_file)
 	if result.Error != nil {
@@ -40,13 +53,26 @@ func CreateFile(c *fiber.Ctx) error {
 // @Success 200 {object} []models.File
 // @Router /Files [get]
 func GetAllFiles(c *fiber.Ctx) error {
-	var files []models.File
-	result := initializers.DB.Find(&files)
-	if result.Error != nil {
-		return result.Error
-	}
+	start, _ := strconv.Atoi(c.FormValue("start"))
+	length, _ := strconv.Atoi(c.FormValue("length"))
+	draw, _ := strconv.Atoi(c.FormValue("draw"))
+	intStart := int(start)
+	intLength := int(length)
+	intDraw := int(draw)
 
-	return c.JSON(&files)
+	var count int64
+	initializers.DB.Model(&models.File{}).Count(&count)
+
+	var files []models.File
+	initializers.DB.Offset(intStart).Limit(intLength).Find(&files)
+
+	c.JSON(&fiber.Map{
+		"data":  files,
+		"count": count,
+		"draw":  intDraw,
+	})
+
+	return nil
 }
 
 // GetFile godoc
@@ -96,26 +122,27 @@ func DeleteFile(c *fiber.Ctx) error {
 // @Summary Gets a presigned URL for uploading a file to GCS
 // @Produce json
 // @Success 200
-// @Router /getpresigned [get]
+// @Router /get-presigned [get]
 func GetPresigned(c *fiber.Ctx) error {
-	bucketName := os.Getenv("BUCKET_NAME")
-	fileName := "test.txt"
-	method := "PUT"
-	expires := time.Now().Add(time.Second * 60)
 
-	opts := &storage.SignedURLOptions{
+	name := c.Query("name")
+	contentType := c.Query("type")
+	bucketName := os.Getenv("BUCKET_NAME")
+	expiration := time.Now().Add(5 * time.Minute)
+
+	signedURL, err := storage.SignedURL(bucketName, name, &storage.SignedURLOptions{
 		GoogleAccessID: os.Getenv("GOOGLE_ACCESS_ID"),
 		PrivateKey:     []byte(os.Getenv("GOOGLE_PRIVATE_KEY")),
-		Method:         method,
-		Expires:        expires,
-	}
-
-	url, err := storage.SignedURL(bucketName, fileName, opts)
+		Method:         "PUT",
+		Expires:        expiration,
+		ContentType:    contentType,
+	})
 	if err != nil {
-		return err
+		log.Fatalf("Failed to create signed URL: %v", err)
 	}
 
 	return c.JSON(&fiber.Map{
-		"url": url,
+		"url":  signedURL,
+		"type": contentType,
 	})
 }

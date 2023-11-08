@@ -1,0 +1,12 @@
+Project:
+Clean up make file.
+Make a better task system.
+Readme.
+
+Add the docker file.
+
+Coding:
+Delete files from the DB and the bucket.
+Update the table after an upload or delete.
+Add File size to the table.
+fix the table cols.
